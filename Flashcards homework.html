@@ -2,8 +2,9 @@
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Flashcards – Komposita & Rezepte</title>
+
     <style>
         * {
             box-sizing: border-box;
@@ -28,21 +29,12 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        header h1 {
-            font-size: 2rem;
-        }
-
-        header p {
-            margin-top: 5px;
-            opacity: 0.9;
-        }
-
         main {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px 20px;
+            padding: 20px;
         }
 
         .instructions {
@@ -51,11 +43,12 @@
             border-left: 5px solid #4a6cf7;
             padding: 15px 20px;
             border-radius: 8px;
-            max-width: 500px;
+            max-width: 600px;
             font-size: 16px;
             line-height: 1.5;
         }
 
+        /* Responsive progress text */
         .progress {
             margin-bottom: 15px;
             font-size: 18px;
@@ -63,26 +56,29 @@
             color: #4a6cf7;
         }
 
-        /* Card */
+        /* Responsive container */
         .card-container {
             perspective: 1000px;
-            width: 90%;
-            max-width: 500px;
-            min-height: 260px;
+            width: 100%;
+            max-width: 600px;
+            min-height: 40vh;
         }
 
+        /* CARD - Fully responsive */
         .card {
             width: 100%;
-            height: 260px;
+            height: 40vh;
+            max-height: 450px;
+            min-height: 260px;
             background: white;
             border-radius: 15px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 22px;
             padding: 20px;
             text-align: center;
+            font-size: clamp(18px, 4vw, 26px);
             transition: transform 0.6s;
             transform-style: preserve-3d;
             cursor: pointer;
@@ -93,6 +89,7 @@
             transform: rotateY(180deg);
         }
 
+        /* Card faces */
         .face {
             position: absolute;
             width: 100%;
@@ -145,6 +142,7 @@
             margin-bottom: 10px;
         }
 
+        /* Footer */
         footer {
             background: #fff;
             padding: 15px 20px;
@@ -154,6 +152,7 @@
             border-top: 1px solid #e0e0e0;
         }
     </style>
+
 </head>
 
 <body>
@@ -166,14 +165,13 @@
     <main>
 
         <div class="instructions">
-            <strong>So geht’s:</strong><br>
-            Klicke auf die Karte, um die Antwort zu sehen.<br>
-            Nutze die Knöpfe unten, um durch die Karten zu blättern.<br>
+            <strong>So geht’s:</strong><br />
+            Klicke auf die Karte, um die Antwort zu sehen.<br />
+            Nutze die Knöpfe unten, um durch die Karten zu blättern.<br />
             Wenn du fertig bist, erscheint eine Erfolgsseite!
         </div>
 
         <div id="progress" class="progress"></div>
-
         <div id="cardArea" class="card-container"></div>
 
         <div id="buttonArea" class="buttons">
@@ -235,11 +233,11 @@
 
         function createCard() {
             cardArea.innerHTML = `
-      <div class="card" id="card">
-        <div class="face front"></div>
-        <div class="face back"></div>
-      </div>
-    `;
+    <div class="card" id="card">
+      <div class="face front"></div>
+      <div class="face back"></div>
+    </div>
+  `;
 
             const card = document.getElementById("card");
             card.addEventListener("click", () => {
@@ -274,11 +272,12 @@
 
         function showSuccess() {
             cardArea.innerHTML = `
-      <div class="success">
-        <h2>Geschafft! 🎉</h2>
-        <p>Du hast alle Flashcards durchgelernt!</p>
-      </div>
-    `;
+    <div class="success">
+      <h2>Geschafft! 🎉</h2>
+      <p>Du hast alle Flashcards durchgelernt!</p>
+    </div>
+  `;
+
             progress.textContent = "Fertig!";
             nextBtn.textContent = "Nochmal spielen";
             nextBtn.onclick = restart;
@@ -290,6 +289,17 @@
             nextBtn.onclick = nextCard;
             updateCard();
         }
+
+        // Optional: adjust height on small phones
+        function adjustHeight() {
+            const card = document.getElementById("card");
+            if (!card) return;
+            const vh = window.innerHeight * 0.45;
+            card.style.height = vh + "px";
+        }
+
+        window.addEventListener("resize", adjustHeight);
+        window.addEventListener("load", adjustHeight);
 
         updateCard();
     </script>
