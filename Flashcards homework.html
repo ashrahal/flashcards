@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcards – Komposita & Rezepte</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f9fafc;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #4a6cf7;
+            color: #fff;
+            padding: 20px 40px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+        }
+
+        header p {
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .instructions {
+            margin-bottom: 20px;
+            background: #eef3ff;
+            border-left: 5px solid #4a6cf7;
+            padding: 15px 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .progress {
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #4a6cf7;
+        }
+
+        /* Card */
+        .card-container {
+            perspective: 1000px;
+            width: 90%;
+            max-width: 500px;
+            min-height: 260px;
+        }
+
+        .card {
+            width: 100%;
+            height: 260px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backface-visibility: hidden;
+        }
+
+        .face.back {
+            transform: rotateY(180deg);
+            color: #555;
+        }
+
+        .buttons {
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            margin: 0 10px;
+            border: none;
+            background: #4a6cf7;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #3a58d7;
+        }
+
+        .success {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            font-size: 24px;
+            line-height: 1.5;
+        }
+
+        .success h2 {
+            color: #4a6cf7;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Flashcards – Komposita & Rezepte</h1>
+        <p>Lerne spielerisch mit Fragen & Antworten</p>
+    </header>
+
+    <main>
+
+        <div class="instructions">
+            <strong>So geht’s:</strong><br>
+            Klicke auf die Karte, um die Antwort zu sehen.<br>
+            Nutze die Knöpfe unten, um durch die Karten zu blättern.<br>
+            Wenn du fertig bist, erscheint eine Erfolgsseite!
+        </div>
+
+        <div id="progress" class="progress"></div>
+
+        <div id="cardArea" class="card-container"></div>
+
+        <div id="buttonArea" class="buttons">
+            <button onclick="prevCard()">Zurück</button>
+            <button id="nextBtn" onclick="nextCard()">Nächste Karte</button>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>Erstellt zum Lernen • Viel Erfolg!</p>
+    </footer>
+
+    <script>
+        const flashcards = [
+            { front: "Was sind Komposita?", back: "Komposita sind zusammengesetzte Nomen aus mindestens zwei Wörtern." },
+            { front: "Wonach richtet sich der Artikel eines zusammengesetzten Nomens?", back: "Der Artikel richtet sich nach dem letzten Wort (Grundwort)." },
+            { front: "Ist der Schrank konkret oder abstrakt?", back: "Der Schrank = konkretes Nomen." },
+            { front: "Ist der Frust konkret oder abstrakt?", back: "Der Frust = abstraktes Nomen." },
+            { front: "Ist die Seele konkret oder abstrakt?", back: "Die Seele = abstraktes Nomen." },
+            { front: "Ist der Schal konkret oder abstrakt?", back: "Der Schal = konkretes Nomen." },
+            { front: "Ist die Limonade konkret oder abstrakt?", back: "Die Limonade = konkretes Nomen." },
+            { front: "Ist das Kätzchen konkret oder abstrakt?", back: "Das Kätzchen = konkretes Nomen." },
+            { front: "Ist das Leid konkret oder abstrakt?", back: "Das Leid = abstraktes Nomen." },
+            { front: "Ist der Glaube konkret oder abstrakt?", back: "Der Glaube = abstraktes Nomen." },
+
+            { front: "Winter + Bastelei =", back: "die Winterbastelei" },
+            { front: "Sport + Kleidung =", back: "die Sportkleidung" },
+            { front: "Spuk + Schloss =", back: "das Spukschloss" },
+
+            { front: "Zerlege: Orangenlimonade", back: "die Orange + die Limonade" },
+            { front: "Zerlege: Geisterschloss", back: "der Geist + das Schloss" },
+            { front: "Zerlege: Frühlingsrolle", back: "der Frühling + die Rolle" },
+
+            { front: "Was ist das Grundwort in 'Rettungsboot'?", back: "Das Boot (bestimmt den Artikel)." },
+            { front: "Kompositum zu Bild (Blume)", back: "die Sonnenblume" },
+            { front: "Kompositum zu Bild (Halskette)", back: "die Halskette" },
+            { front: "Kompositum zu Bild (Kuchen)", back: "der Kirschkuchen" },
+
+            { front: "Merkmal 1 eines Rezepts?", back: "Überschrift / Titel" },
+            { front: "Merkmal 2 eines Rezepts?", back: "Foto / Bild" },
+            { front: "Merkmal 3 eines Rezepts?", back: "Zubereitungszeit" },
+            { front: "Merkmal 4 eines Rezepts?", back: "Backzeit oder Kochzeit" },
+            { front: "Merkmal 5 eines Rezepts?", back: "Zutatenliste" },
+            { front: "Merkmal 6 eines Rezepts?", back: "Portionen-Angabe" },
+            { front: "Merkmal 7 eines Rezepts?", back: "Zubereitung" },
+            { front: "Merkmal 8 eines Rezepts?", back: "Tipp" },
+
+            { front: "In welcher Form werden Rezepte oft geschrieben?", back: "In der Befehlsform (Imperativ)." },
+            { front: "Warum ist eine Zutatenliste wichtig?", back: "Sie zeigt, was man braucht und wie viel davon." },
+            { front: "Wozu dient die Portionen-Angabe?", back: "Sie zeigt, für wie viele Personen das Rezept reicht." }
+        ];
+
+        let index = 0;
+
+        const cardArea = document.getElementById("cardArea");
+        const progress = document.getElementById("progress");
+        const nextBtn = document.getElementById("nextBtn");
+
+        function createCard() {
+            cardArea.innerHTML = `
+      <div class="card" id="card">
+        <div class="face front"></div>
+        <div class="face back"></div>
+      </div>
+    `;
+
+            const card = document.getElementById("card");
+            card.addEventListener("click", () => {
+                card.classList.toggle("flipped");
+            });
+
+            return card;
+        }
+
+        function updateCard() {
+            if (index >= flashcards.length) {
+                showSuccess();
+                return;
+            }
+
+            const card = createCard();
+            card.querySelector(".front").textContent = flashcards[index].front;
+            card.querySelector(".back").textContent = flashcards[index].back;
+
+            progress.textContent = `Karte ${index + 1} von ${flashcards.length}`;
+        }
+
+        function nextCard() {
+            index++;
+            updateCard();
+        }
+
+        function prevCard() {
+            if (index > 0) index--;
+            updateCard();
+        }
+
+        function showSuccess() {
+            cardArea.innerHTML = `
+      <div class="success">
+        <h2>Geschafft! 🎉</h2>
+        <p>Du hast alle Flashcards durchgelernt!</p>
+      </div>
+    `;
+            progress.textContent = "Fertig!";
+            nextBtn.textContent = "Nochmal spielen";
+            nextBtn.onclick = restart;
+        }
+
+        function restart() {
+            index = 0;
+            nextBtn.textContent = "Nächste Karte";
+            nextBtn.onclick = nextCard;
+            updateCard();
+        }
+
+        updateCard();
+    </script>
+
+</body>
+
+</html>
