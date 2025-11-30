@@ -7,141 +7,241 @@
     <title>Flashcards – Komposita & Rezepte</title>
 
     <style>
-        body {
-            font-family: sans-serif;
-            background: #f6f7fb;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            text-align: center;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+            background: #f5f6fa;
+            color: #222;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 80px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
         }
 
         header {
             background: #3f66ff;
-            padding: 20px;
+            padding: 22px;
             color: #fff;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: bold;
+            text-align: center;
+            margin-bottom: 16px;
+            border-radius: 0 0 12px 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        header img {
+            width: 32px;
+            height: 32px;
         }
 
         .instructions {
             background: #e8edff;
             padding: 20px;
-            margin: 20px auto;
-            width: 90%;
-            max-width: 600px;
-            border-radius: 10px;
-            text-align: left;
+            border-radius: 12px;
             font-size: 1rem;
+            margin-bottom: 26px;
+            line-height: 1.5;
         }
 
-        /* Flashcard styling */
-        .flashcard {
-            width: 90%;
-            max-width: 520px;
-            min-height: 260px;
-            background: #fff;
-            margin: 20px auto;
-            padding: 36px 28px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.5rem;
-            line-height: 1.5;
-            transition: 0.3s;
+        /* PROGRESS BAR */
+        .progress-wrapper {
+            width: 100%;
+            background: #dce3ff;
+            height: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress {
+            height: 10px;
+            width: 0%;
+            background: #3f66ff;
+            transition: width 0.4s ease;
         }
 
         .counter {
-            font-size: 1.1rem;
-            margin-top: 20px;
+            font-size: 1.15rem;
             font-weight: 600;
             color: #3f66ff;
+            text-align: center;
+            margin-bottom: 14px;
         }
 
-        /* Buttons */
-        .controls {
-            margin-top: 30px;
+        /* FLASHCARD WITH FLIP */
+        .flashcard-container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
+
+        .flashcard {
+            width: 100%;
+            max-width: 520px;
+            min-height: 260px;
+            background: white;
+            padding: 42px 28px;
+            border-radius: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+            font-size: 1.6rem;
+            text-align: center;
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 20px;
+            line-height: 1.4;
+            cursor: pointer;
+
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .side {
+            position: absolute;
+            backface-visibility: hidden;
+            width: 100%;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* BUTTONS */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+            margin-bottom: 40px;
         }
 
         .controls button {
-            padding: 14px 24px;
+            padding: 16px;
             background: #3f66ff;
-            color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 10px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: white;
             cursor: pointer;
-            min-width: 140px;
+            width: 100%;
+            transition: 0.15s;
         }
 
         .controls button:active {
-            transform: scale(0.97);
+            transform: scale(0.98);
         }
 
-        /* SUCCESS PAGE */
+        /* SUCCESS */
         #success {
             display: none;
+            margin-top: 40px;
             font-size: 2rem;
-            margin-top: 60px;
-            color: #4CAF50;
+            color: #28a745;
+            text-align: center;
         }
 
-        /* MOBILE FIX */
+        #success img {
+            width: 80px;
+            margin-bottom: 20px;
+        }
+
+        #replay {
+            display: none;
+            margin-top: 20px;
+            padding: 16px 24px;
+            background: #3f66ff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+        }
+
         @media (max-width: 600px) {
-            header {
-                font-size: 1.2rem;
+            .page {
+                padding: 14px;
             }
 
             .flashcard {
-                width: 100%;
+                padding: 44px 20px;
                 min-height: 300px;
-                font-size: 1.6rem;
-                padding: 40px 20px;
+                font-size: 1.5rem;
             }
 
-            .controls {
-                flex-direction: column;
-                gap: 14px;
-                width: 80%;
-                margin: 0 auto;
+            .instructions {
+                font-size: 0.95rem;
+                padding: 18px;
             }
 
             .controls button {
-                width: 100%;
-                font-size: 1.2rem;
-                padding: 16px;
+                font-size: 1.1rem;
+                padding: 14px;
             }
         }
     </style>
-
 </head>
 
 <body>
 
-    <header>Flashcards – Komposita & Rezepte</header>
+    <div class="page">
 
-    <div class="instructions">
-        <b>So geht’s:</b><br>
-        Klicke auf die Karte, um die Antwort zu sehen.<br>
-        Nutze die Knöpfe unten, um durch die Karten zu blättern.<br>
-        Wenn du fertig bist, erscheint eine Erfolgsseite!
+        <header>
+            <img src="https://cdn-icons-png.flaticon.com/512/742/742751.png" />
+            Flashcards – Komposita & Rezepte
+        </header>
+
+        <div class="instructions">
+            <b>So geht’s:</b><br>
+            Tippe die Karte, um sie umzudrehen.<br>
+            Nutze die Knöpfe unten, um weiterzugehen.<br>
+            Wenn du fertig bist, erscheint eine Erfolgsseite!
+        </div>
+
+        <div class="progress-wrapper">
+            <div id="progress" class="progress"></div>
+        </div>
+
+        <div class="counter" id="counter">Karte 1 von 29</div>
+
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard">
+                <div class="side front" id="front"></div>
+                <div class="side back" id="back"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="next">Nächste Karte</button>
+            <button id="prev">Zurück</button>
+        </div>
+
+        <div id="success">
+            <img src="https://cdn-icons-png.flaticon.com/512/992/992700.png" />
+            🎉 Du hast alle Karten geschafft! Super gemacht! 🎉
+        </div>
+
+        <button id="replay">🔄 Nochmal spielen</button>
+
     </div>
-
-    <div class="counter" id="counter">Karte 1 von 31</div>
-
-    <div class="flashcard" id="flashcard">Was sind Komposita?</div>
-
-    <div class="controls">
-        <button id="prev">Zurück</button>
-        <button id="next">Nächste Karte</button>
-    </div>
-
-    <div id="success">🎉 Du hast alle Karten geschafft! Super gemacht! 🎉</div>
 
     <script>
         const cards = [
@@ -182,36 +282,50 @@
         ];
 
         let index = 0;
-        let showingAnswer = false;
+        let flipped = false;
 
-        const card = document.getElementById("flashcard");
+        const flashcard = document.getElementById("flashcard");
+        const front = document.getElementById("front");
+        const back = document.getElementById("back");
         const counter = document.getElementById("counter");
         const success = document.getElementById("success");
+        const progress = document.getElementById("progress");
+        const replay = document.getElementById("replay");
+
+        function updateProgress() {
+            progress.style.width = (index / cards.length) * 100 + "%";
+        }
 
         function updateCard() {
             if (index >= cards.length) {
                 document.querySelector(".controls").style.display = "none";
-                card.style.display = "none";
+                flashcard.style.display = "none";
                 counter.style.display = "none";
                 success.style.display = "block";
+                replay.style.display = "block";
+                progress.style.width = "100%";
                 return;
             }
 
-            showingAnswer = false;
-            card.textContent = cards[index][0];
+            front.textContent = cards[index][0];
+            back.textContent = cards[index][1];
+
             counter.textContent = `Karte ${index + 1} von ${cards.length}`;
+            updateProgress();
+
+            if (flipped) {
+                flashcard.classList.remove("flipped");
+                flipped = false;
+            }
         }
 
-        card.addEventListener("click", () => {
-            if (!showingAnswer) {
-                card.textContent = cards[index][1];
-                showingAnswer = true;
-            } else {
-                card.textContent = cards[index][0];
-                showingAnswer = false;
-            }
+        /* Flip */
+        flashcard.addEventListener("click", () => {
+            flipped = !flipped;
+            flashcard.classList.toggle("flipped");
         });
 
+        /* Buttons */
         document.getElementById("next").addEventListener("click", () => {
             index++;
             updateCard();
@@ -219,6 +333,17 @@
 
         document.getElementById("prev").addEventListener("click", () => {
             if (index > 0) index--;
+            updateCard();
+        });
+
+        /* REPLAY */
+        replay.addEventListener("click", () => {
+            index = 0;
+            success.style.display = "none";
+            replay.style.display = "none";
+            flashcard.style.display = "flex";
+            counter.style.display = "block";
+            document.querySelector(".controls").style.display = "flex";
             updateCard();
         });
 
