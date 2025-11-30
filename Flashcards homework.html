@@ -18,54 +18,55 @@
             background: #f5f6fa;
             color: #222;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 80px;
+            justify-content: center;
+            padding-bottom: 60px;
         }
 
         .page {
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             padding: 20px;
         }
 
+        /* HEADER */
         header {
             background: #3f66ff;
             padding: 22px;
             color: #fff;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 16px;
-            border-radius: 0 0 12px 12px;
+            margin-bottom: 18px;
+            border-radius: 0 0 16px 16px;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         header img {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
         }
 
+        /* INSTRUCTIONS */
         .instructions {
             background: #e8edff;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 22px;
+            border-radius: 14px;
             font-size: 1rem;
-            margin-bottom: 26px;
-            line-height: 1.5;
+            margin-bottom: 28px;
+            line-height: 1.55;
         }
 
-        /* PROGRESS BAR */
+        /* PROGRESS */
         .progress-wrapper {
             width: 100%;
             background: #dce3ff;
             height: 10px;
             border-radius: 8px;
             overflow: hidden;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .progress {
@@ -75,45 +76,54 @@
             transition: width 0.4s ease;
         }
 
+        /* COUNTER */
         .counter {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: #3f66ff;
             text-align: center;
-            margin-bottom: 14px;
+            margin-bottom: 18px;
         }
 
-        /* FLASHCARD WITH FLIP */
+        /* FLASHCARD */
         .flashcard-container {
             perspective: 1000px;
-            margin-bottom: 30px;
         }
 
         .flashcard {
             width: 100%;
-            max-width: 520px;
-            min-height: 260px;
-            background: white;
-            padding: 42px 28px;
-            border-radius: 18px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
-            font-size: 1.6rem;
-            text-align: center;
+            min-height: 350px;
+            padding: 40px;
+
+            /* CLEAN WHITE CARD */
+            background: #ffffff;
+
+            border-radius: 24px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+
+            /* Perfect centering */
             display: flex;
-            align-items: center;
             justify-content: center;
-            line-height: 1.4;
+            align-items: center;
+
+            position: relative;
             cursor: pointer;
 
-            transition: transform 0.6s;
+            font-size: 1.45rem;
+            line-height: 1.45;
+            white-space: pre-line;
+            text-align: center;
+
             transform-style: preserve-3d;
-            position: relative;
+            transition: transform 0.6s;
+
+            margin-bottom: 36px;
         }
 
         .side {
             position: absolute;
-            backface-visibility: hidden;
             width: 100%;
+            backface-visibility: hidden;
         }
 
         .back {
@@ -133,20 +143,21 @@
             margin-bottom: 40px;
         }
 
-        .controls button {
+        .controls button,
+        #replay {
             padding: 16px;
             background: #3f66ff;
             border: none;
-            border-radius: 10px;
-            font-size: 1.15rem;
+            border-radius: 12px;
+            font-size: 1.2rem;
             font-weight: 600;
             color: white;
             cursor: pointer;
-            width: 100%;
             transition: 0.15s;
         }
 
-        .controls button:active {
+        .controls button:active,
+        #replay:active {
             transform: scale(0.98);
         }
 
@@ -166,33 +177,19 @@
 
         #replay {
             display: none;
-            margin-top: 20px;
-            padding: 16px 24px;
-            background: #3f66ff;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            color: white;
-            cursor: pointer;
+            margin-top: 25px;
         }
 
+        /* MOBILE */
         @media (max-width: 600px) {
-            .page {
-                padding: 14px;
-            }
-
             .flashcard {
-                padding: 44px 20px;
-                min-height: 300px;
-                font-size: 1.5rem;
+                padding: 40px 25px;
+                min-height: 380px;
+                font-size: 1.35rem;
             }
 
-            .instructions {
-                font-size: 0.95rem;
-                padding: 18px;
-            }
-
-            .controls button {
+            .controls button,
+            #replay {
                 font-size: 1.1rem;
                 padding: 14px;
             }
@@ -201,7 +198,6 @@
 </head>
 
 <body>
-
     <div class="page">
 
         <header>
@@ -220,7 +216,7 @@
             <div id="progress" class="progress"></div>
         </div>
 
-        <div class="counter" id="counter">Karte 1 von 29</div>
+        <div class="counter" id="counter">Karte 1 von 27</div>
 
         <div class="flashcard-container">
             <div class="flashcard" id="flashcard">
@@ -245,40 +241,57 @@
 
     <script>
         const cards = [
-            // 31 QUESTIONS + ANSWERS   
-            ["Was sind Komposita?", "Wörter, die aus zwei oder mehr Wörtern bestehen."],
-            ["Beispiel für ein Kompositum?", "Schreibtisch, Hausaufgabe, Fußballplatz."],
-            ["Wie nennt man den ersten Teil eines Kompositums?", "Bestimmungswort."],
-            ["Wie nennt man den zweiten Teil eines Kompositums?", "Grundwort."],
-            ["Was bestimmt das Grundwort?", "Die Wortart und Bedeutung."],
-            ["Was passiert beim Schreiben von Komposita?", "Sie werden zusammengeschrieben."],
-            ["Warum nutzt man Komposita?", "Um Dinge genauer zu beschreiben."],
+            // Q1
+            {
+                front: "Q1: Ordne die Nomen richtig zu!\nDer Schrank, Der Frust, Die Seele, Der Schal, Die Limonade, Das Kätzchen, Das Leid, Der Glaube\nKonkrete oder abstrakte Nomen?",
+                back: "Konkrete Nomen: der Schrank, der Schal, die Limonade, das Kätzchen\nAbstrakte Nomen: der Frust, die Seele, das Leid, der Glaube"
+            },
 
-            // 7 Merkmale eines Rezepts:
-            ["Merkmal 1 eines Rezepts?", "Titel"],
-            ["Merkmal 2 eines Rezepts?", "Zutatenliste"],
-            ["Merkmal 3 eines Rezepts?", "Mengenangaben"],
-            ["Merkmal 4 eines Rezepts?", "Arbeitsschritte"],
-            ["Merkmal 5 eines Rezepts?", "Reihenfolge"],
-            ["Merkmal 6 eines Rezepts?", "Back- oder Kochzeit"],
-            ["Merkmal 7 eines Rezepts?", "Zubereitung"],
+            // Q2
+            { front: "Q2: Bilde zusammengesetzte Nomen!\nder Winter + die Bastelei =", back: "die Winterbastelei" },
+            { front: "Q2: Bilde zusammengesetzte Nomen!\nder Sport + die Kleidung =", back: "die Sportkleidung" },
+            { front: "Q2: Bilde zusammengesetzte Nomen!\nder Spuk + das Schloss =", back: "das Spukschloss" },
 
-            // Additional cards (to reach 31)
-            ["Was ist eine Zutatenliste?", "Eine Auflistung aller benötigten Zutaten."],
-            ["Was bedeutet 'vermengen'?", "Alles gut mischen."],
-            ["Was bedeutet 'kneten'?", "Teig mit den Händen bearbeiten."],
-            ["Was bedeutet 'backen'?", "Lebensmittel im Ofen erhitzen."],
-            ["Was bedeutet 'braten'?", "Lebensmittel in der Pfanne erhitzen."],
-            ["Was bedeutet 'garen'?", "Lebensmittel durch Hitze weich machen."],
-            ["Was bedeutet 'servieren'?", "Essen schön anrichten und bereitstellen."],
-            ["Ein Beispiel für Arbeitsschritte?", "1. Schneiden  2. Mischen  3. Backen."],
-            ["Warum sind Mengenangaben wichtig?", "Damit das Ergebnis gelingt."],
-            ["Was ist ein Rezepttitel?", "Der Name des Gerichts."],
-            ["Warum Schritt-für-Schritt?", "Damit man nichts vergisst."],
-            ["Was bedeutet 'köcheln'?", "Leicht und langsam kochen."],
-            ["Was bedeutet 'rühren'?", "Mit einem Löffel mischen."],
-            ["Was bedeutet 'zutaten zerkleinern'?", "Klein schneiden oder hacken."],
-            ["Was ist das Ziel eines Rezepts?", "Eine klare Anleitung zum Kochen oder Backen."]
+            // Q3
+            { front: "Q3: Trenne die zusammengesetzten Nomen!\nOrangenlimonade", back: "die Orange + die Limonade" },
+            { front: "Q3: Trenne die zusammengesetzten Nomen!\nGeisterschloss", back: "der Geist + das Schloss" },
+            { front: "Q3: Trenne die zusammengesetzten Nomen!\nFrühlingsrolle", back: "der Frühling + die Rolle" },
+
+            // Q4
+            {
+                front: "Q4: Was sind Komposita?",
+                back: "Komposita sind zusammengesetzte Nomen, die aus mindestens zwei Wörtern bestehen."
+            },
+
+            // Q5
+            {
+                front: "Q5: Wonach richtet sich der Artikel eines zusammengesetzten Nomens?",
+                back: "Der Artikel richtet sich nach dem letzten Wort (dem Grundwort)."
+            },
+
+            // Q6
+            {
+                front: "Q6: Welche 3 zusammengesetzten Nomen sind gesucht?\n(Bilder: Blume, Halskette, Kuchen)",
+                back: "Sonnenblume, Halskette, Kirschkuchen"
+            },
+
+            // Q7
+            {
+                front: "Q7: Erkläre! Was ist hier passiert? – Das Rettungsboot",
+                back: "Rettungsboot besteht aus Rettung + Boot. Der Artikel kommt vom Grundwort 'Boot', also heißt es DAS Rettungsboot."
+            },
+
+            // Q8
+            {
+                front: "Q8: Nenne die 8 Merkmale eines Rezepts!!",
+                back: "1. Überschrift/Titel\n2. Foto/Bild\n3. Zubereitungszeit\n4. Back- oder Kochzeit\n5. Zutatenliste\n6. Portionen-Angabe\n7. Zubereitung\n8. Tipp"
+            },
+
+            // Q9
+            {
+                front: "Q9: Was weißt du noch, wurde aber nicht gefragt?",
+                back: "Mögliche Antwort: Rezepte werden oft in der Befehlsform geschrieben (z. B. Mische alles!).\nOder: Komposita können auch aus Adjektiven/Verben bestehen (z. B. Schnellzug)."
+            }
         ];
 
         let index = 0;
@@ -293,13 +306,19 @@
         const replay = document.getElementById("replay");
 
         function updateProgress() {
-            progress.style.width = (index / cards.length) * 100 + "%";
+            progress.style.width = ((index) / cards.length) * 100 + "%";
         }
 
-        function updateCard() {
+        function showCard() {
+            front.textContent = cards[index].front;
+            back.textContent = cards[index].back;
+            counter.textContent = `Karte ${index + 1} von ${cards.length}`;
+        }
+
+        function update() {
             if (index >= cards.length) {
-                document.querySelector(".controls").style.display = "none";
                 flashcard.style.display = "none";
+                document.querySelector(".controls").style.display = "none";
                 counter.style.display = "none";
                 success.style.display = "block";
                 replay.style.display = "block";
@@ -307,15 +326,12 @@
                 return;
             }
 
-            front.textContent = cards[index][0];
-            back.textContent = cards[index][1];
-
-            counter.textContent = `Karte ${index + 1} von ${cards.length}`;
+            showCard();
             updateProgress();
 
             if (flipped) {
-                flashcard.classList.remove("flipped");
                 flipped = false;
+                flashcard.classList.remove("flipped");
             }
         }
 
@@ -325,29 +341,29 @@
             flashcard.classList.toggle("flipped");
         });
 
-        /* Buttons */
+        /* Navigation */
         document.getElementById("next").addEventListener("click", () => {
             index++;
-            updateCard();
+            update();
         });
 
         document.getElementById("prev").addEventListener("click", () => {
             if (index > 0) index--;
-            updateCard();
+            update();
         });
 
-        /* REPLAY */
+        /* Replay */
         replay.addEventListener("click", () => {
             index = 0;
             success.style.display = "none";
             replay.style.display = "none";
             flashcard.style.display = "flex";
-            counter.style.display = "block";
             document.querySelector(".controls").style.display = "flex";
-            updateCard();
+            counter.style.display = "block";
+            update();
         });
 
-        updateCard();
+        update();
     </script>
 
 </body>
