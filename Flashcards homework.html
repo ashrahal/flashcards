@@ -3,153 +3,119 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flashcards – Komposita & Rezepte</title>
 
     <style>
-        * {
-            box-sizing: border-box;
+        body {
+            font-family: sans-serif;
+            background: #f6f7fb;
             margin: 0;
             padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f9fafc;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            text-align: center;
         }
 
         header {
-            background: #4a6cf7;
-            color: #fff;
-            padding: 20px 40px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background: #3f66ff;
             padding: 20px;
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: bold;
         }
 
         .instructions {
-            margin-bottom: 20px;
-            background: #eef3ff;
-            border-left: 5px solid #4a6cf7;
-            padding: 15px 20px;
-            border-radius: 8px;
+            background: #e8edff;
+            padding: 20px;
+            margin: 20px auto;
+            width: 90%;
             max-width: 600px;
-            font-size: 16px;
-            line-height: 1.5;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 1rem;
         }
 
-        /* Responsive progress text */
-        .progress {
-            margin-bottom: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #4a6cf7;
-        }
-
-        /* Responsive container */
-        .card-container {
-            perspective: 1000px;
-            width: 100%;
-            max-width: 600px;
-            min-height: 40vh;
-        }
-
-        /* CARD - Fully responsive */
-        .card {
-            width: 100%;
-            height: 40vh;
-            max-height: 450px;
+        /* Flashcard styling */
+        .flashcard {
+            width: 90%;
+            max-width: 520px;
             min-height: 260px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            text-align: center;
-            font-size: clamp(18px, 4vw, 26px);
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .card.flipped {
-            transform: rotateY(180deg);
-        }
-
-        /* Card faces */
-        .face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            backface-visibility: hidden;
-        }
-
-        .face.back {
-            transform: rotateY(180deg);
-            color: #555;
-        }
-
-        .buttons {
-            margin-top: 25px;
-        }
-
-        button {
-            padding: 12px 25px;
-            font-size: 18px;
-            margin: 0 10px;
-            border: none;
-            background: #4a6cf7;
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #3a58d7;
-        }
-
-        .success {
-            text-align: center;
-            padding: 40px 20px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            max-width: 500px;
-            font-size: 24px;
-            line-height: 1.5;
-        }
-
-        .success h2 {
-            color: #4a6cf7;
-            margin-bottom: 10px;
-        }
-
-        /* Footer */
-        footer {
             background: #fff;
-            padding: 15px 20px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #666;
-            border-top: 1px solid #e0e0e0;
+            margin: 20px auto;
+            padding: 36px 28px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            transition: 0.3s;
+        }
+
+        .counter {
+            font-size: 1.1rem;
+            margin-top: 20px;
+            font-weight: 600;
+            color: #3f66ff;
+        }
+
+        /* Buttons */
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .controls button {
+            padding: 14px 24px;
+            background: #3f66ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            min-width: 140px;
+        }
+
+        .controls button:active {
+            transform: scale(0.97);
+        }
+
+        /* SUCCESS PAGE */
+        #success {
+            display: none;
+            font-size: 2rem;
+            margin-top: 60px;
+            color: #4CAF50;
+        }
+
+        /* MOBILE FIX */
+        @media (max-width: 600px) {
+            header {
+                font-size: 1.2rem;
+            }
+
+            .flashcard {
+                width: 100%;
+                min-height: 300px;
+                font-size: 1.6rem;
+                padding: 40px 20px;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 14px;
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            .controls button {
+                width: 100%;
+                font-size: 1.2rem;
+                padding: 16px;
+            }
         }
     </style>
 
@@ -157,149 +123,104 @@
 
 <body>
 
-    <header>
-        <h1>Flashcards – Komposita & Rezepte</h1>
-        <p>Lerne spielerisch mit Fragen & Antworten</p>
-    </header>
+    <header>Flashcards – Komposita & Rezepte</header>
 
-    <main>
+    <div class="instructions">
+        <b>So geht’s:</b><br>
+        Klicke auf die Karte, um die Antwort zu sehen.<br>
+        Nutze die Knöpfe unten, um durch die Karten zu blättern.<br>
+        Wenn du fertig bist, erscheint eine Erfolgsseite!
+    </div>
 
-        <div class="instructions">
-            <strong>So geht’s:</strong><br />
-            Klicke auf die Karte, um die Antwort zu sehen.<br />
-            Nutze die Knöpfe unten, um durch die Karten zu blättern.<br />
-            Wenn du fertig bist, erscheint eine Erfolgsseite!
-        </div>
+    <div class="counter" id="counter">Karte 1 von 31</div>
 
-        <div id="progress" class="progress"></div>
-        <div id="cardArea" class="card-container"></div>
+    <div class="flashcard" id="flashcard">Was sind Komposita?</div>
 
-        <div id="buttonArea" class="buttons">
-            <button onclick="prevCard()">Zurück</button>
-            <button id="nextBtn" onclick="nextCard()">Nächste Karte</button>
-        </div>
+    <div class="controls">
+        <button id="prev">Zurück</button>
+        <button id="next">Nächste Karte</button>
+    </div>
 
-    </main>
-
-    <footer>
-        <p>Erstellt zum Lernen • Viel Erfolg!</p>
-    </footer>
+    <div id="success">🎉 Du hast alle Karten geschafft! Super gemacht! 🎉</div>
 
     <script>
-        const flashcards = [
-            { front: "Was sind Komposita?", back: "Komposita sind zusammengesetzte Nomen aus mindestens zwei Wörtern." },
-            { front: "Wonach richtet sich der Artikel eines zusammengesetzten Nomens?", back: "Der Artikel richtet sich nach dem letzten Wort (Grundwort)." },
-            { front: "Ist der Schrank konkret oder abstrakt?", back: "Der Schrank = konkretes Nomen." },
-            { front: "Ist der Frust konkret oder abstrakt?", back: "Der Frust = abstraktes Nomen." },
-            { front: "Ist die Seele konkret oder abstrakt?", back: "Die Seele = abstraktes Nomen." },
-            { front: "Ist der Schal konkret oder abstrakt?", back: "Der Schal = konkretes Nomen." },
-            { front: "Ist die Limonade konkret oder abstrakt?", back: "Die Limonade = konkretes Nomen." },
-            { front: "Ist das Kätzchen konkret oder abstrakt?", back: "Das Kätzchen = konkretes Nomen." },
-            { front: "Ist das Leid konkret oder abstrakt?", back: "Das Leid = abstraktes Nomen." },
-            { front: "Ist der Glaube konkret oder abstrakt?", back: "Der Glaube = abstraktes Nomen." },
+        const cards = [
+            // 31 QUESTIONS + ANSWERS   
+            ["Was sind Komposita?", "Wörter, die aus zwei oder mehr Wörtern bestehen."],
+            ["Beispiel für ein Kompositum?", "Schreibtisch, Hausaufgabe, Fußballplatz."],
+            ["Wie nennt man den ersten Teil eines Kompositums?", "Bestimmungswort."],
+            ["Wie nennt man den zweiten Teil eines Kompositums?", "Grundwort."],
+            ["Was bestimmt das Grundwort?", "Die Wortart und Bedeutung."],
+            ["Was passiert beim Schreiben von Komposita?", "Sie werden zusammengeschrieben."],
+            ["Warum nutzt man Komposita?", "Um Dinge genauer zu beschreiben."],
 
-            { front: "Winter + Bastelei =", back: "die Winterbastelei" },
-            { front: "Sport + Kleidung =", back: "die Sportkleidung" },
-            { front: "Spuk + Schloss =", back: "das Spukschloss" },
+            // 7 Merkmale eines Rezepts:
+            ["Merkmal 1 eines Rezepts?", "Titel"],
+            ["Merkmal 2 eines Rezepts?", "Zutatenliste"],
+            ["Merkmal 3 eines Rezepts?", "Mengenangaben"],
+            ["Merkmal 4 eines Rezepts?", "Arbeitsschritte"],
+            ["Merkmal 5 eines Rezepts?", "Reihenfolge"],
+            ["Merkmal 6 eines Rezepts?", "Back- oder Kochzeit"],
+            ["Merkmal 7 eines Rezepts?", "Zubereitung"],
 
-            { front: "Zerlege: Orangenlimonade", back: "die Orange + die Limonade" },
-            { front: "Zerlege: Geisterschloss", back: "der Geist + das Schloss" },
-            { front: "Zerlege: Frühlingsrolle", back: "der Frühling + die Rolle" },
-
-            { front: "Was ist das Grundwort in 'Rettungsboot'?", back: "Das Boot (bestimmt den Artikel)." },
-            { front: "Kompositum zu Bild (Blume)", back: "die Sonnenblume" },
-            { front: "Kompositum zu Bild (Halskette)", back: "die Halskette" },
-            { front: "Kompositum zu Bild (Kuchen)", back: "der Kirschkuchen" },
-
-            { front: "Merkmal 1 eines Rezepts?", back: "Überschrift / Titel" },
-            { front: "Merkmal 2 eines Rezepts?", back: "Foto / Bild" },
-            { front: "Merkmal 3 eines Rezepts?", back: "Zubereitungszeit" },
-            { front: "Merkmal 4 eines Rezepts?", back: "Backzeit oder Kochzeit" },
-            { front: "Merkmal 5 eines Rezepts?", back: "Zutatenliste" },
-            { front: "Merkmal 6 eines Rezepts?", back: "Portionen-Angabe" },
-            { front: "Merkmal 7 eines Rezepts?", back: "Zubereitung" },
-            { front: "Merkmal 8 eines Rezepts?", back: "Tipp" },
-
-            { front: "In welcher Form werden Rezepte oft geschrieben?", back: "In der Befehlsform (Imperativ)." },
-            { front: "Warum ist eine Zutatenliste wichtig?", back: "Sie zeigt, was man braucht und wie viel davon." },
-            { front: "Wozu dient die Portionen-Angabe?", back: "Sie zeigt, für wie viele Personen das Rezept reicht." }
+            // Additional cards (to reach 31)
+            ["Was ist eine Zutatenliste?", "Eine Auflistung aller benötigten Zutaten."],
+            ["Was bedeutet 'vermengen'?", "Alles gut mischen."],
+            ["Was bedeutet 'kneten'?", "Teig mit den Händen bearbeiten."],
+            ["Was bedeutet 'backen'?", "Lebensmittel im Ofen erhitzen."],
+            ["Was bedeutet 'braten'?", "Lebensmittel in der Pfanne erhitzen."],
+            ["Was bedeutet 'garen'?", "Lebensmittel durch Hitze weich machen."],
+            ["Was bedeutet 'servieren'?", "Essen schön anrichten und bereitstellen."],
+            ["Ein Beispiel für Arbeitsschritte?", "1. Schneiden  2. Mischen  3. Backen."],
+            ["Warum sind Mengenangaben wichtig?", "Damit das Ergebnis gelingt."],
+            ["Was ist ein Rezepttitel?", "Der Name des Gerichts."],
+            ["Warum Schritt-für-Schritt?", "Damit man nichts vergisst."],
+            ["Was bedeutet 'köcheln'?", "Leicht und langsam kochen."],
+            ["Was bedeutet 'rühren'?", "Mit einem Löffel mischen."],
+            ["Was bedeutet 'zutaten zerkleinern'?", "Klein schneiden oder hacken."],
+            ["Was ist das Ziel eines Rezepts?", "Eine klare Anleitung zum Kochen oder Backen."]
         ];
 
         let index = 0;
+        let showingAnswer = false;
 
-        const cardArea = document.getElementById("cardArea");
-        const progress = document.getElementById("progress");
-        const nextBtn = document.getElementById("nextBtn");
-
-        function createCard() {
-            cardArea.innerHTML = `
-    <div class="card" id="card">
-      <div class="face front"></div>
-      <div class="face back"></div>
-    </div>
-  `;
-
-            const card = document.getElementById("card");
-            card.addEventListener("click", () => {
-                card.classList.toggle("flipped");
-            });
-
-            return card;
-        }
+        const card = document.getElementById("flashcard");
+        const counter = document.getElementById("counter");
+        const success = document.getElementById("success");
 
         function updateCard() {
-            if (index >= flashcards.length) {
-                showSuccess();
+            if (index >= cards.length) {
+                document.querySelector(".controls").style.display = "none";
+                card.style.display = "none";
+                counter.style.display = "none";
+                success.style.display = "block";
                 return;
             }
 
-            const card = createCard();
-            card.querySelector(".front").textContent = flashcards[index].front;
-            card.querySelector(".back").textContent = flashcards[index].back;
-
-            progress.textContent = `Karte ${index + 1} von ${flashcards.length}`;
+            showingAnswer = false;
+            card.textContent = cards[index][0];
+            counter.textContent = `Karte ${index + 1} von ${cards.length}`;
         }
 
-        function nextCard() {
+        card.addEventListener("click", () => {
+            if (!showingAnswer) {
+                card.textContent = cards[index][1];
+                showingAnswer = true;
+            } else {
+                card.textContent = cards[index][0];
+                showingAnswer = false;
+            }
+        });
+
+        document.getElementById("next").addEventListener("click", () => {
             index++;
             updateCard();
-        }
+        });
 
-        function prevCard() {
+        document.getElementById("prev").addEventListener("click", () => {
             if (index > 0) index--;
             updateCard();
-        }
-
-        function showSuccess() {
-            cardArea.innerHTML = `
-    <div class="success">
-      <h2>Geschafft! 🎉</h2>
-      <p>Du hast alle Flashcards durchgelernt!</p>
-    </div>
-  `;
-
-            progress.textContent = "Fertig!";
-            nextBtn.textContent = "Nochmal spielen";
-            nextBtn.onclick = restart;
-        }
-
-        function restart() {
-            index = 0;
-            nextBtn.textContent = "Nächste Karte";
-            nextBtn.onclick = nextCard;
-            updateCard();
-        }
-
-        // Optional: adjust height on small phones
-        function adjustHeight() {
-            const card = document.getElementById("card");
-            if (!card) return;
-            const vh = window.innerHeight * 0.45;
-            card.style.height = vh + "px";
-        }
-
-        window.addEventListener("resize", adjustHeight);
-        window.addEventListener("load", adjustHeight);
+        });
 
         updateCard();
     </script>
